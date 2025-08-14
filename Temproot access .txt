@@ -1,0 +1,18 @@
+temproot:::
+/tools/infra/bin/add_temproot_user.sh -t 10  -p MA@12frsefrty6758 -c RITM4579255
+/var/tmp/add_temproot_user.sh -t 45  -p MA@12frsefrty6758 -c RITM4571567
+/tools/infra/bin/add_temproot_user.sh -r (Removing the temproot access)
+
+
+Decom:::
+
+cat DECOM | dbash -c "/tools/infra/bin/add_temproot_user.sh -D -p MA@12frserdtvdew65335 -c CHG1342904"
+
+for AIX manually:
+useradd -u 67396 -g usr -d /home/decom -c "manage_user_script temp decomm" -s /usr/bin/ksh decom
+
+
+echo "root:notwest" | chpasswd
+echo "temproot:MA@12frserdew65335" | chpasswd
+echo "carkrec:Welcome@123" | chpasswd
+

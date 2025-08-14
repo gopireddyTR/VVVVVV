@@ -1,0 +1,16 @@
+/tools/infra/bin/smartservice.py -a
+
+ssh automation-msp-mgmt.int.thomsonreuters.com
+
+smartservice.py list -a --->Complete list of services available in TR.
+smartservice.py list -s <server name> --->To check services for server.
+smartservice.py add -x <service name> -s <CI> --->To subscribe service for perticular server.
+smartservice.py delete -x <service name> -s <CI> --->To unsubscribe service for perticular server.
+
+
+
+linux_platform_maintenance-3_1_0
+
+
+export FACTER_TRCALLBACK=https://linuxlib.int.thomsonreuters.com;export
+PATH=$PATH:/opt/puppetlabs/bin;puppet apply --detailed-exitcodes --modulepath=/var/log/puppet_apply/puppet_apply-20240326-124757.d/linux-platform_configuration_management-1_4_0 -e "include install"

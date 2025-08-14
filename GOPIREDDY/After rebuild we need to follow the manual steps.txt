@@ -1,0 +1,74 @@
+lsblk
+
+fdisk /dev/sdb
+
+n
+p
+
+create the partition and change the LVM hexadecimal to 8e
+
+
+parted -s -a optimal /dev/sdb mklabel gpt mkpart primary 1 100% -> create a partition and filesystem
+ 
+
+pvcreate /dev/sdb1
+vgcreate datavg /dev/sdb1
+
+
+lvcreate -L 15G -n appserverlv datavg;mkfs.xfs /dev/mapper/datavg-appserverlv
+
+lvcreate -L 1G -n mrlv datavg;mkfs.xfs /dev/mapper/datavg-mrlv
+
+lvcreate -L 5G -n loglv datavg;mkfs.xfs /dev/mapper/datavg-loglv
+
+
+/dev/mapper/datavg-appserverlv /appserver      xfs    defaults        1       2
+/dev/mapper/datavg-mrlv        /mr             xfs    defaults        1       2
+/dev/mapper/datavg-loglv       /log            xfs    defaults        1       2
+
+
+groupadd -g 61702 asadmin
+useradd asadmin -u 66804 -g 61702 -d /home/asadmin -s /bin/bash
+
+groupadd -g 61703 asread
+useradd asread -u 66805 -g 61703 -d /home/asread -s /bin/bash
+
+
+
+=======
+
+groupadd -g 61702 asadmin
+groupadd -g 61471 sdgcodes
+groupadd -g 60361 sdgshared
+groupadd -g 897 dd-agent
+
+
+useradd asadmin -u 66804 -g 61702 -d /home/asadmin -s /bin/bash -c "App_Server_Admin"
+useradd bermuda -u 66141 -g 60361 -d /home/bermuda -s /bin/bash -c "Bermuda App"
+usermod -aG 61471 bermuda 
+
+
+lvcreate -L 15G -n appserverlv datavg;mkfs.xfs /dev/mapper/datavg-appserverlv
+
+lvcreate -L 1G -n mrlv datavg;mkfs.xfs /dev/mapper/datavg-mrlv
+
+lvcreate -L 5G -n loglv datavg;mkfs.xfs /dev/mapper/datavg-loglv
+
+
+/dev/mapper/datavg-appserverlv /appserver      xfs    defaults        1       2
+/dev/mapper/datavg-mrlv        /mr             xfs    defaults        1       2
+/dev/mapper/datavg-loglv       /log            xfs    defaults        1       2
+
+
+mkdir /appserver
+mkdir /mr
+mkdir /log
+
+
+chown asadmin:asadmin /appserver
+chown asadmin:asadmin /mr
+chown asadmin:asadmin /log
+
+
+chmod 2775 /appserver;chmod 2775 /mr;chmod 2775 /log
+

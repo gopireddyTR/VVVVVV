@@ -1,0 +1,4 @@
+
+1) route del default gw 10.184.65.254 ens192
+2) route add default gw 10.96.128.62 eth0
+3) service network restart

@@ -1,0 +1,55 @@
+==========LINUX==========
+rpm -qa |grep -i BESagent*
+
+to install 
+
+curl https://linuxlib.int.thomsonreuters.com/files/GLOBAL/install-IEM-EL.sh | bash
+curl https://linuxlib.int.thomsonreuters.com/files/GLOBAL/install-IEM-OL.sh| bash
+/tools/infra/bin/bigfix.sh
+
+remove /etc/opt/BESClient and /var/opt/BESClient
+
+cd /var/opt/BESClient/__BESData/__Global/Logs --> logs
+
+
+=======Solaries===============
+
+Steps for install the package in solaries:
+
+pkginfo -l BESagent
+pkgrm BESagent
+pkginfo -l BESagent
+pkgadd -d BESAgent-9.5.14.73.sparc_sol10.pkg
+or
+pkgadd -d BESAgent-9.5.14.73.x86_sol10.pkg
+
+/etc/init.d/besclient restart
+==========AIX==========
+cd /etc/rc.d/rc2.d
+./SBESClientd start
+
+ps -ef |grep -i bes
+
+# ./SBESClientd start
+Starting BigFix: BESClient
+# ps -ef |grep -i bes
+    root 438376      1   8 10:54:33      -  0:00 /opt/BESClient/bin/BESClient
+    root 544908 667864   1 10:54:39  pts/5  0:00 grep -i bes
+#
+
+==========================
+New BESAgent file for RHEL:https://tr1.jfrog.io/artifactory/generic-local/ihn-sre/services/a202687-emi/current/BIGFIX-CLIENT-CENTOS-OEL-RHEL.zip!/BESAgent-10.0.2.52-rhe6.x86_64.rpm Besclient not installed currently but still has old files in BESClient directories:
+
+rm -rf /var/opt/BESClient /etc/opt/BESClient 
+Install new client:
+
+ls -l /tools/infra/bin/install-IEM-*
+
+
+BigFix Client - Installer Guide   :: https://trten.sharepoint.com/:w:/r/sites/intr-plat-eng/_layouts/15/Doc.aspx?sourcedoc=%7BE7D4696F-53A9-4380-A266-733DBA970DCD%7D&file=BigFix%20Client%20-%20Installer%20Guide.docx&_DSL=1&action=default&mobileredirect=true&cid=426fa414-9b18-4cc4-aa52-2e08735c2c96
+
+BigFix Client Compliance Remediation Guide    :: https://trten.sharepoint.com/:w:/r/sites/intr-plat-eng/_layouts/15/Doc.aspx?sourcedoc=%7BAC1265BF-16BD-43D2-9381-5668E555A282%7D&file=BigFix%20Client%20Compliance%20Remediation%20Guide.docx&action=default&mobileredirect=true&cid=651bd461-81a4-4ae9-98aa-49f12e268c50
+
+https://trten.sharepoint.com/sites/UNIX-SUPPORT-TR/SitePages/Unsupported-Operating-Systems-for-the-latest-BigFix-Client.aspx
+
+https://trten.sharepoint.com/sites/UNIX-SUPPORT-TR/SitePages/BigFix-Client---Traffic-Guide.aspx
