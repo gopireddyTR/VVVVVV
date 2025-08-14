@@ -20,3 +20,6 @@ echo $i
 /usr/ios/cli/ioscli vfcmap -vadapter $i -fcp
 rmdev -Rdl $i
 done
+
+
+dd
