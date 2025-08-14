@@ -22,4 +22,4 @@ rmdev -Rdl $i
 done
 
 
-
+dd
