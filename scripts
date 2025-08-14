@@ -1,4 +1,11 @@
-***********to check user isp menu access for all servers**********8
+######
+GOPI
+VENKAT
+REDDY
+
+
+
+#***********to check user isp menu access for all servers**********8
 for i in `cat /admin/lists/tops.stores`
 do
 echo "$i `rsh $i cat /opt/opco/mnu/files/mnu100d1.fil |grep tvdxh2`"
@@ -8,7 +15,7 @@ for i in `lspv | grep power | grep none | awk '{ print $1 }'`
 do
 echo "$i `bootinfo -s $i"
 done
-*************
+######*************
 for i in `lspv | grep power | awk '{ print $1 }'`
 do
 lscfg -vpl $i | grep Manu
