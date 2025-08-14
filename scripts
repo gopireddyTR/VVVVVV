@@ -1,0 +1,22 @@
+***********to check user isp menu access for all servers**********8
+for i in `cat /admin/lists/tops.stores`
+do
+echo "$i `rsh $i cat /opt/opco/mnu/files/mnu100d1.fil |grep tvdxh2`"
+done
+************to check new disks sizes************
+for i in `lspv | grep power | grep none | awk '{ print $1 }'`
+do
+echo "$i `bootinfo -s $i"
+done
+*************
+for i in `lspv | grep power | awk '{ print $1 }'`
+do
+lscfg -vpl $i | grep Manu
+done
+**************************************
+for i in `cat /tmp/aa`
+do
+echo $i
+/usr/ios/cli/ioscli vfcmap -vadapter $i -fcp
+rmdev -Rdl $i
+done
