@@ -1,0 +1,82 @@
+UNIX - INC5252979(02/03/23): Action Required: BigFix Non-Compliant Incident (54 servers)
+
+As part of the TR initiatives to improve our security posture, ISRM and Platform Engineering have been involved in efforts to establish parity between our on-premise and our public cloud controls such as anti-virus, Endpoint Detection and Response (EDR), logging, monitoring, security patching, and system hardening.
+
+Steps to become compliant for BigFix:  Follow Remediation Instructions
+
+Unsupported Operating Systems for the latest BigFix Client
+
+The following criteria must be met in order for a bigfix client to successfully register in the root server:
+
+1) Hostname on server needs to match CI record.
+If the output of the 'hostname' command does not match the Service Now CI name exactly then registration with the Bigfix server will fail. 
+The main cause of this issue is where the fqdn has been configured instead of the server short name:
+e.g.
+
+root@c188pjs:~# hostname
+
+c188pjs.int.thomsonreuters.com
+
+ To fix we must work with the BU to schedule a change to correct the hostname.
+
+2) DNS lookup of bigfix relay has to work
+
+Bigfix clients will not be able to register if they are unable to resolve the bigfix relay server fqdn. 
+There are a few reason which may prevent this happening:
+
+1) DNS is not set up (this is the case on many old custom servers) and there is no entry for bigfix relay in /etc/hosts
+
+2) /etc/nsswitch.conf is not set up to use DNS even though resolv.conf is present
+
+e.g. 
+
+root@ukbp-crmadmin # ls -l /etc/resolv.conf
+
+-rw-r----- 1 root root 87 Mar 26 2015 /etc/resolv.conf
+
+root@ukbp-crmadmin #
+
+root@ukbp-crmadmin # grep hosts /etc/nsswitch.conf | grep -v ^#
+
+hosts: files                     <-- 'dns' needs to be included here to allow besclient to lookup relay fqdn using nameservers configured in resolv.conf
+
+This results in the below type of behavior where telnet is unable to resolve the iem server fqdn but a lookup using the 'host' command works:
+
+root@ukbp-crmadmin # telnet iem-cis.int.thomsonreuters.com 52311
+
+iem-cis.int.thomsonreuters.com: node name or service name not known
+
+root@ukbp-crmadmin #
+
+root@ukbp-crmadmin # host iem-cis.int.thomsonreuters.com
+
+iem-cis.int.thomsonreuters.com is an alias for iem-cis.ha.int.corptr.com.
+
+iem-cis.ha.int.corptr.com has address 159.42.130.17
+
+To resolve host side DNS related problems, work with the BU and schedule a change to:
+
+a. Setup nsswitch to use dns as well as /etc/hosts
+
+b. update resolv.conf or /etc/hosts as required. *** using /etc/hosts for DNS is not advised and should only be used in the absence of proper DNS in legacy systems.
+
+c. Setup DNS by creating resolv.conf and updating nsswitch.conf to use dns after hosts.
+
+3) Port 52311 must be open between server and bigfix relay. (see "Confirming TCP 52311 connectivity" below for details on finding the configured Relay server in /var/opt/BESClient/besclient.config)
+
+The relay server can be found in /var/opt/BESClient/besclient.config under [Software\BigFix\EnterpriseClient\Settings\Client\__Relay_Control_Server1]:
+#awk '/Relay_Control_Server1/{getline; print}' /var/opt/BESClient/besclient.config | sed 's/.*http:\/\/\(.*\):.*/\1/'
+
+Test TCP 52311 connectivity with telnet:
+ 
+#telnet c643nhr.int.thomsonreuters.com 52311
+or:
+#curl -v telnet://c643nhr.int.thomsonreuters.com:52311
+
+TCP 52311 must be open from client to emi-froot.int.thomsonreuters.com. IPs behind emi-froot.int.thomsonreuters.com are 159.42.204.35 and 159.42.160.45 
+
+Relay Servers list: https://emi.int.thomsonreuters.com:8083/relaylist.csv 
+
+4) UDP port 52311 must be open from the Relay to the client (see 'Network connectivity issues' section below for details on checking UDP ping)
+
+#UDP ping status can be viewed in  https://executor.int.thomsonreuters.com/compInfo.php.

@@ -1,0 +1,37 @@
+groupadd -g 61702 asadmin
+
+useradd -u 66804 -g 61702 asadmin
+
+lvcreate -L 20G -n appserverlv datavg;mkfs.xfs /dev/mapper/datavg-appserverlv
+
+lvcreate -L 1G -n mrlv datavg;mkfs.xfs /dev/mapper/datavg-mrlv
+
+lvcreate -L 100G -n loglv datavg;mkfs.xfs /dev/mapper/datavg-loglv
+
+lvcreate -l 100%FREE -n datalv datavg;mkfs.xfs /dev/mapper/datavg-datalv
+
+
+lvcreate -l 50%FREE -n data1lv fiovg1
+mkfs.xfs /dev/mapper/fiovg1-data1lv
+
+
+lvcreate -l 100%FREE -n data2lv fiovg1
+mkfs.xfs /dev/mapper/fiovg1-data2lv
+
+/dev/mapper/datavg-appserverlv      /appserver      xfs    defaults        1       2
+/dev/mapper/datavg-mrlv             /mr             xfs    defaults        1       2
+/dev/mapper/datavg-loglv            /log            xfs    defaults        1       2
+/dev/mapper/datavg-datalv           /data           xfs    defaults        1       2
+/dev/mapper/fiovg1-data1lv          /fdata/data1    xfs    defaults        1       2
+/dev/mapper/fiovg1-data2lv          /fdata/data2    xfs    defaults        1       2
+
+
+mkdir /appserver /mr /log /data
+
+mkdir -p /fdata/data1 /fdata/data2
+  
+mount -a
+
+
+chown asadmin:asadmin /appserver /mr /log /data /fdata/data1 /fdata/data2 /fdata/
+

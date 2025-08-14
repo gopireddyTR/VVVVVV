@@ -1,0 +1,116 @@
+First you need to remove old package then you need to install new package as mentioned below. Its installed on US1S-CSPDATA02A server please work on other server.
+
+root@US1S-CSPDATA02A # pkgrm BESagent
+
+The following package is currently installed:
+   BESagent  BigFix Agent
+             (i386) 9.5.9.62
+
+Do you want to remove this package? [y,n,?,q] y
+
+## Removing installed package instance <BESagent>
+
+This package contains scripts which will be executed with super-user
+permission during the process of removing this package.
+
+Do you want to continue with the removal of this package [y,n,?,q] y
+## Verifying package <BESagent> dependencies in global zone
+## Processing package information.
+## Executing preremove script.
+Stopping BESClient
+BESClient is not running
+waiting for process not running
+process not running
+## Removing pathnames in class <none>
+/var/svc/manifest/application/management/besclient.xml
+/var/opt/BESClient/besclient.config.default
+/opt/BESClient/bin/BESClient
+/etc/init.d/besclient
+/etc/init.d/BESSvcActivate
+## Updating system information.
+
+Removal of <BESagent> was successful.
+root@US1S-CSPDATA02A #  pkginfo -l BESagent
+ERROR: information for "BESagent" was not found
+
+
+root@US1S-CSPDATA02A # pkgadd -d BESAgent-9.5.14.73.x86_sol10.pkg
+
+The following packages are available:
+  1  BESagent     BigFix Agent
+                  (i386) 9.5.14.73
+
+Select package(s) you wish to process (or 'all' to process
+all packages). (default: all) [?,??,q]: all
+
+Processing package instance <BESagent> from </tmp/BESAgent-9.5.14.73.x86_sol10.pkg>
+
+BigFix Agent(i386) 9.5.14.73
+Licensed Materials - Property of HCL.
+(C) HCL Technologies Limited 2001-2019.
+All Rights Reserved
+## Executing checkinstall script.
+## Processing package information.
+## Processing system information.
+## Verifying package dependencies.
+## Verifying disk space requirements.
+## Checking for conflicts with packages already installed.
+## Checking for setuid/setgid programs.
+
+This package contains scripts which will be executed with super-user
+permission during the process of installing this package.
+
+Do you want to continue with the installation of <BESagent> [y,n,?] y
+
+Installing BigFix Agent as <BESagent>
+
+## Executing preinstall script.
+Stopping BESClient
+svcs: Pattern 'BESClient' doesn't match any instances
+BESClient is not running
+waiting for process not running
+process not running
+## Installing part 1 of 1.
+/etc/init.d/BESSvcActivate
+/etc/init.d/besclient
+/etc/rc2.d/S99BESSvcActivate <symbolic link>
+/opt/BESClient/bin/BESClient
+/opt/BESClient/bin/XBESClientUI
+/opt/BESClient/bin/XOpenUI
+/opt/BESClient/bin/libBEScrypto.so
+/opt/BESClient/bin/libBEScryptoFIPS.so
+/opt/BESClient/bin/qna
+/opt/BESClient/bin/swidtag/ibm.com_IBM_BigFix_Platform_Agent-9.5.0.swidtag
+/opt/BESClient/bin/swidtag <implied directory>
+/opt/BESClient/bin/swidtag/ibm.com_IBM_BigFix_Platform_Agent-9.5.14.73.swidtag
+/opt/BESClient/bin/xqna
+/var/opt/BESClient/besclient.config.default
+/var/svc/manifest/application/management/besclient.xml
+[ verifying class <none> ]
+## Executing postinstall script.
+
+Installation of <BESagent> was successful.
+
+
+root@US1S-CSPDATA02A #  pkginfo -l BESagent
+   PKGINST:  BESagent
+      NAME:  BigFix Agent
+  CATEGORY:  system
+      ARCH:  i386
+   VERSION:  9.5.14.73
+   BASEDIR:  /
+    VENDOR:  HCL Technologies Limited
+    PSTAMP:  solaris10x86x32v2bs20191014141422
+  INSTDATE:  Sep 09 2020 15:24
+    STATUS:  completely installed
+     FILES:       14 installed pathnames
+                  10 executables
+              126945 blocks used (approx)
+
+root@US1S-CSPDATA02A # 
+
+
+
+https://refinitiv.sharepoint.com/:w:/r/teams/SE-CoreandCoreTools/_layouts/15/Doc.aspx?sourcedoc=%7B8ca53675-7e3d-4b4d-b1b2-f3cb6ed79790%7D&action=view&wdLOR=c06B0F595-8898-4CB8-BF34-318FD5897F6A&wdAccPdf=0&wdparaid=282328AD&cid=f3b1152d-1cd1-40d4-99a8-d60acc5ba7a2
+
+https://refinitiv.sharepoint.com/:w:/r/teams/SE-CoreandCoreTools/_layouts/15/WopiFrame2.aspx?sourcedoc=%7B8ca53675-7e3d-4b4d-b1b2-f3cb6ed79790%7D&cid=f912c537-8eef-46a8-840e-23a6127bba3d
